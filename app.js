@@ -1,64 +1,77 @@
-const express = require("express");
-const app = express();
-const indexRouter = require("./routes/index");
-const path = require("path");
+const express=require('express');
+const app=express();
+const http=require('http');
+const path=require('path');
+const socketIo=require('socket.io');
+const server=http.createServer(app);
+const io=socketIo(server);
+const indexRouter=require("./routes/index");
+const { log } = require('console');
 
-const http = require("http");
-const socketIO = require("socket.io");
-const server = http.createServer(app);
-const io = socketIO(server);
 
-app.set("view engine", "ejs");
+app.set('view engine','ejs');
+app.use(express.static(path.join(__dirname,"public")));
+app.use(express.urlencoded({extended:true}));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "public")));
-let waitingusers = [];
-let room = {};
 
-io.on("connection", function (socket) {
-    socket.on("joinroom", function () {
-        if (waitingusers.length > 0) {
-            let partner = waitingusers.shift();
-            const roomname = `${socket.id}-${partner.id}`;
-            socket.join(roomname);
-            partner.join(roomname);
+let waitingUser=[];
+let rooms={};
 
-            io.on(roomname).emit("joined", roomname);
-        } else {
-            waitingusers.push(socket);
-        }
-    });
 
-    socket.on("signalingMessage", function (data) {
-        socket.broadcast.to(data.room).emit("signalingMessage", data.message)
-    });
 
-    socket.on("message", function (data) {
-        socket.broadcast.to(data.room).emit("message", data.message);
-    });
+io.on("connection",function(socket)
+{
+  socket.on("joinroom",function()
+{
+    if(waitingUser.length>0)
+    {
+      const partner= waitingUser.shift();
+      const roomname=`${socket.id}-${partner.id}`;
+      socket.join(roomname);
+      partner.join(roomname);
+io.to(roomname).emit("joined",roomname);
+    }
+    else
+    {
+        waitingUser.push(socket);
+    }
+}) 
 
-    socket.on("startVideoCall", function ({ room }) {
-        socket.broadcast.to(room).emit("incomingCall")
-    });
+socket.on("signalingMessage",function(data)
+{
+        socket.broadcast.to(data.room).emit("signalingMessage",data.message);
+})
 
-    socket.on("rejectCall", function ({ room }) {
-        socket.broadcast.to(room).emit("callRejected")
-    });
 
-    socket.on("acceptedCall", function ({ room }) {
-        socket.broadcast.to(room).emit("callAccepted");
-    });
+socket.on("message",function(data)
+{
+    socket.broadcast.to(data.room).emit("message",data.message);
+})
 
-    socket.on("disconnect", function () {
-        let index = waitingusers.findIndex(
-            waitingUser => waitingUser.id === socket.id);
+socket.on("startVideoCall",function({room})
+{
+ socket.broadcast.to(room).emit("incomingCall");
+});
 
-        waitingusers.splice(index, 1);
+socket.on("acceptCall",function({room})
+{
+    socket.broadcast.to(room).emit("callAccepted");
+});
 
-    });
+socket.on("rejectCall",function({room})
+{
+    socket.broadcast.to(room).emit("callRejected");
+})
+
+socket.on("disconnect",function()
+{
+    let index=waitingUser.findIndex((waitinguser) => waitinguser.id===socket.id); 
+    waitingUser.splice(index,1);
+})
 });
 
 
-app.use("/", indexRouter);
+
+app.use("/",indexRouter);
 
 server.listen(3000);
