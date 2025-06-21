@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Omegle Clone - Connect Instantly</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    .gradient-bg {
+      background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+      background-size: 400% 400%;
+      animation: gradient 15s ease infinite;
+    }
+
+    .floating {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .custom-shape-divider-bottom-1679835625 {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      overflow: hidden;
+      line-height: 0;
+      transform: rotate(180deg);
+    }
+
+    .custom-shape-divider-bottom-1679835625 svg {
+      position: relative;
+      display: block;
+      width: calc(300% + 1.3px);
+      height: 150px;
+    }
+
+    .custom-shape-divider-bottom-1679835625 .shape-fill {
+      fill: #FFFFFF;
+    }
+
+    @media (max-width: 640px) {
+      .custom-shape-divider-bottom-1679835625 svg {
+        height: 75px;
+      }
+    }
+  </style>
+</head>
+
+<body class="flex items-center justify-center min-h-screen gradient-bg font-['Poppins',sans-serif] overflow-hidden">
+  <div class="custom-shape-divider-bottom-1679835625">
+    <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+      <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+    </svg>
+  </div>
+
+  <div class="relative z-10 bg-white bg-opacity-20 backdrop-filter backdrop-blur-lg rounded-3xl shadow-2xl p-6 sm:p-12 w-full max-w-md mx-4 text-center transform hover:scale-105 transition-all duration-300 ease-in-out">
+    <div class="floating">
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4 sm:mb-6 text-white">Welcome to Omegle Clone</h1>
+      <p class="text-lg sm:text-xl text-white mb-6 sm:mb-8">Connect with strangers from around the world!</p>
+    </div>
+    <a href="/chat" class="block w-full text-center bg-white text-indigo-600 py-3 px-6 rounded-full text-lg font-semibold hover:bg-indigo-100 transition-colors duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
+      Start Chatting Now
+    </a>
+    <div class="mt-6 sm:mt-8 text-white text-opacity-80">
+      <p class="text-sm sm:text-base">Ready for a new adventure?</p>
+      <p class="text-sm sm:text-base">Click the button above to begin!</p>
+    </div>
+  </div>
+
+  <div class="absolute bottom-2 sm:bottom-4 left-2 sm:left-4 text-white text-opacity-50 text-xs sm:text-sm">
+    &copy; 2023 Omegle Clone. All rights reserved.
+  </div>
+</body>
+
+</html>
